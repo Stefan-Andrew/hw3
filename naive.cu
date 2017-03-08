@@ -63,6 +63,7 @@ kernel0 (dtype *input, dtype *output, unsigned int n)
 {
   __shared__  dtype scratch[MAX_THREADS];
 
+  
   unsigned int bid = gridDim.x * blockIdx.y + blockIdx.x;
   unsigned int i = bid * blockDim.x + threadIdx.x;
 
