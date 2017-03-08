@@ -62,6 +62,57 @@ dtype reduce_cpu(dtype *data, int n) {
 __global__ void
 kernel5(dtype *g_idata, dtype *g_odata, unsigned int n)
 {
+		__shared__  dtype scratch[MAX_THREADS];
+
+	unsigned int bid =  blockIdx.x;
+	unsigned int i = bid * blockDim.x  + threadIdx.x;
+	unsigned int gridSize = blockDim.x * gridDim.x;
+
+	scratch[threadIdx.x] = 0;
+	while((i + gridSize) < n){
+		scratch[threadIdx.x] +=g_idata[i];
+		gridSize += gridSize;
+	}
+	__syncthreads ();
+	
+
+	for(unsigned int s = blockDim.x >> 1; s > 32; s >>= 1) {
+		if ( threadIdx.x < s )
+		  scratch[threadIdx.x] += scratch[threadIdx.x + s];
+
+		__syncthreads ();
+	}
+
+	
+	if(n > 64){
+		scratch[threadIdx.x] += scratch[threadIdx.x + 32];
+		__syncthreads ();
+	} 
+	if(n > 32){
+		scratch[threadIdx.x] += scratch[threadIdx.x + 16];
+		__syncthreads ();
+	}
+	if(n > 16){
+		scratch[threadIdx.x] += scratch[threadIdx.x + 8];
+		__syncthreads ();
+	}
+	if(threadIdx.x < 32){
+		if(n > 8){
+			scratch[threadIdx.x] += scratch[threadIdx.x + 4];
+		}
+		if(n > 4){
+			scratch[threadIdx.x] += scratch[threadIdx.x + 2];
+		}
+		if(n > 2){
+			scratch[threadIdx.x] += scratch[threadIdx.x + 1];
+		}
+	}
+		
+	
+	
+	if(threadIdx.x == 0) {
+		g_odata[bid] = scratch[0];
+	}
 }
 
 
