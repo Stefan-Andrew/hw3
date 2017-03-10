@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -N MULTIPLE
+#$ -N TRANSPOSE
 #$ -q gpu
 #$ -l gpu=1
 #$ -pe gpu-node-cores 6
@@ -42,7 +42,7 @@ echo ""
 echo "=== Running 5 trials of multiple ... ==="
 for trial in 1 2 3 4 5; do
   echo "*** Trial ${trial} ***"
-  ./multiple
+  ./transpose 1024
 done
 
 echo ""
