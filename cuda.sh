@@ -39,7 +39,7 @@ echo "Node:" `hostname`
 echo "Current directory: ${PWD}"
 
 echo ""
-echo "=== Running 5 trials of multiple ... ==="
+echo "=== Running 5 trials of tranpose naive ... ==="
 for trial in 1 2 3 4 5; do
   echo "*** Trial ${trial} ***"
   ./transpose 1024

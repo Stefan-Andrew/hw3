@@ -10,11 +10,12 @@ typedef float dtype;
 __global__ 
 void matTrans(dtype* AT, dtype* A, int N)  
 {
-	/* Fill your code here */
-	int x = blockIdx.x * 32 + threadIdx.x;
-	int y = blockIdx.y * 32 + threadIdx.y;
-	int width = gridDim.x * 32;
-	for (int j = 0; j < 32; j+= 8)
+	int tile_dim = 32;
+
+	int x = blockIdx.x * tile_dim + threadIdx.x;
+	int y = blockIdx.y * tile_dim + threadIdx.y;
+	int width = gridDim.x * tile_dim;
+	for (int j = 0; j < tile_dim; j+= 8)
 	AT[x*width + (y+j)] = A[(y+j)*width + x];
 }
 
@@ -74,10 +75,10 @@ gpuTranspose (dtype* A, dtype* AT, int N)
 	struct stopwatch_t* timer = NULL;
 	long double t_gpu;
 	dtype *i_data, *o_data;		//input data and outdata
-	
+	int TILE_DIM = 32;
 
-	dim3 gb(N/32, N/32, 1);
-	dim3 tb(32, 8, 1);
+	dim3 gb(N/TILE_DIM, N/TILE_DIM, 1);
+	dim3 tb(TILE_DIM, 8, 1);
 
 	//Allocating the memory for the input and output matrix
 	CUDA_CHECK_ERROR(cudaMalloc(&i_data, N*N*sizeof(dtype)));
