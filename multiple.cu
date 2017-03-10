@@ -69,7 +69,7 @@ kernel5(dtype *g_idata, dtype *g_odata, unsigned int n)
 	unsigned int gridSize = blockDim.x * gridDim.x;
 
 	scratch[threadIdx.x] = 0;
-	
+	//doing seq reduction when writing into shared-memory
 	while(i < n){
 		scratch[threadIdx.x] +=g_idata[i];
 		i += gridSize;

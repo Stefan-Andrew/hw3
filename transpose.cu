@@ -15,6 +15,7 @@ void matTrans(dtype* AT, dtype* A, int N)
 	int x = blockIdx.x * tile_dim + threadIdx.x;
 	int y = blockIdx.y * tile_dim + threadIdx.y;
 	int width = gridDim.x * tile_dim;
+
 	for (int j = 0; j < tile_dim; j+= 8)
 	AT[x*width + (y+j)] = A[(y+j)*width + x];
 }
@@ -76,7 +77,7 @@ gpuTranspose (dtype* A, dtype* AT, int N)
 	long double t_gpu;
 	dtype *i_data, *o_data;		//input data and outdata
 	int TILE_DIM = 32;
-
+	//defining the block and number of threads
 	dim3 gb(N/TILE_DIM, N/TILE_DIM, 1);
 	dim3 tb(TILE_DIM, 8, 1);
 

@@ -74,14 +74,14 @@ kernel4(dtype *g_idata, dtype *g_odata, unsigned int n)
 	}
 	__syncthreads ();
 
-
+	//when stride is greater than 32, do regular for loop
 	for(unsigned int s = blockDim.x >> 1; s > 32; s >>= 1) {
 		if ( threadIdx.x < s )
 		  scratch[threadIdx.x] += scratch[threadIdx.x + s];
 
 		__syncthreads ();
 	}
-
+	//Unroll the last 6 strides, only do it on the first 32 threads
 	if(threadIdx.x < 32){
 		if(n > 64){
 			scratch[threadIdx.x] += scratch[threadIdx.x + 32];
