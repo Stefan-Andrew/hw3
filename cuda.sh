@@ -1,5 +1,5 @@
 #!/bin/bash
-#$ -N TRANSPOSE
+#$ -N TRANSPOSE_NAIVE
 #$ -q gpu
 #$ -l gpu=1
 #$ -pe gpu-node-cores 6
@@ -39,7 +39,7 @@ echo "Node:" `hostname`
 echo "Current directory: ${PWD}"
 
 echo ""
-echo "=== Running 5 trials of tranpose naive ... ==="
+echo "=== Running 5 trials of tranpose NAIVE ... ==="
 for trial in 1 2 3 4 5; do
   echo "*** Trial ${trial} ***"
   ./transpose 1024

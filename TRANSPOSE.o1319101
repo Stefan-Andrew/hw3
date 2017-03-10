@@ -1,8 +1,8 @@
-Script began: Thu Mar 9 16:15:21 PST 2017
+Script began: Thu Mar 9 17:01:41 PST 2017
 Node: compute-1-14.local
 Current directory: /data/users/andrewy4/hw3
 
-=== Running 5 trials of tranpose naive ... ===
+=== Running 5 trials of tranpose shared memory ... ===
 *** Trial 1 ***
 Timer: gettimeofday
 Timer resolution: ~ 1 us (?)
